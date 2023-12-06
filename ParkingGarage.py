@@ -1,33 +1,30 @@
 import time
 class ParkingGarage:
 
-    def __init__(self, initial_park_space, initial_numb_tik):
-        self.initial_park_space = initial_park_space
-        self.initial_numb_tik = initial_numb_tik
-        self.park_tik_numb = 0
-        self.paid_tiks = []
+    def __init__(self, parkingSpace):
+        self.tickets = list(range(1, parkingSpace + 1))
+        self.parking_spots = list(range(1, parkingSpace + 1))
+        self.current_ticket = {}
+
+
 
     def takeTicket(self):
         while True:
             take_tik = input("Wanna park here? Take a ticket\n($20 flat rate up to 24hrs): ('y'/'n')")
             if take_tik.lower() == 'y':
-                self.initial_park_space -= 1
-                self.initial_numb_tik -= 1
-                self.park_tik_numb += 1
-                tickets.append(self.park_tik_numb)
-                parking_spots.append(self.initial_park_space)
+                parking_spot = self.parking_spots.pop(0)
+                self.current_ticket = {"ticket_number": self.tickets.pop(0), "paid": False}
                 print("Here's your ticket, enjoy your day!")
-                print("Available parking spaces:", self.initial_park_space)
-                print("Remaining Tickets:", self.initial_numb_tik)
-                print("Ticket Number: OOP - {} - CT".format(str(self.park_tik_numb + 100)))
-                current_ticket.update({"tik_num": self.park_tik_numb})
-                print(current_ticket)
+                print(f"You pulled Ticket Number : {self.current_ticket['ticket_number']}")
+                print(f"Available parking spaces:", len(self.parking_spots))
+                print(f"Remaining Tickets:, {len(self.tickets)}")
+
                 self.leaveGarage()
 
             elif take_tik.lower() == 'n':
                 print("Have a nice day, good luck parking someplace else.")
-                print("Available parking spaces:", self.initial_park_space)
-                print("Remaining Tickets:", self.initial_numb_tik)
+                print("Available parking spaces:", len(self.parking_spots))
+                print("Remaining Tickets:", len(self.tickets))
                 break
             else:
                 print("Invalid option, try again")
@@ -49,11 +46,11 @@ class ParkingGarage:
             time.sleep(1)
             print("Thank you! I hope you have a wonderful day!")
             print("You have 15 minutes to leave the garage")
-            self.paid_tiks.append(self.park_tik_numb)
-            self.initial_park_space += 1  
-            self.initial_numb_tik += 1
-            print("Available parking spaces:", self.initial_park_space)
-            print("Remaining Tickets:", self.initial_numb_tik)
+            self.current_ticket['paid'] = True
+            self.parking_spots.append(0)  
+            self.tickets.append(self.current_ticket["ticket_number"])
+            print("Available parking spaces:", len(self.parking_spots))
+            print("Remaining Tickets:", len(self.tickets))
         elif pFP.lower() == 'g':
             print("Please go pay at the gate, Thank you")
             time.sleep(1)
@@ -61,30 +58,23 @@ class ParkingGarage:
             if payGate.lower() == 'y':
                 time.sleep(1)
                 print('Thank you! Have a great day!')
-                print("Ticket Number:", str(self.park_tik_numb))
+                print("Ticket Number:", str(self.current_ticket["ticket_number"]))
                 print("===========================")
                 print("===========================")
                 print("END OF DAY COUNT")
-                self.paid_tiks.append(self.park_tik_numb)
-                self.initial_park_space += 1  
-                self.initial_numb_tik += 1
-                print("Remaining parking spaces:", self.initial_park_space)
-                print("Remaining Tickets:", self.initial_numb_tik)
+                self.current_ticket['paid'] = True
+                self.parking_spots.append(0)
+                self.tickets.append(self.current_ticket["ticket_number"])
+                print("Remaining parking spaces:", len(self.parking_spots))
+                print("Remaining Tickets:", len(self.tickets))
             elif payGate.lower() == 'n':
                 self.leaveGarage()
             else:
                 print("Invalid option, try again")
-initial_park_space = 200
-initial_numb_tik = 200
 
-tickets = []
-parking_spots = []
-current_ticket = {
-    "tik_num": ""
-}
 
-parking_Machine = ParkingGarage(initial_park_space, initial_numb_tik)
+
+parking_Machine = ParkingGarage(parkingSpace=200)
 
 parking_Machine.takeTicket()
 
-# print("Paid Tickets:", parking_Machine.paid_tiks)
